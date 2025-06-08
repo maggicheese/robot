@@ -1,15 +1,10 @@
 import pandas as pd
 import numpy as np
-
 data = pd.read_csv('Training_examples.csv')
-concepts = np.array(data)[:, :-1]  # Extract features
-
-target = np.array(data)[:, -1]  # Extract target labels
-
+concepts = np.array(data)[:, :-1]  
+target = np.array(data)[:, -1]  
 def train(con, tar):
-    specific_h = None  # Initialize specific hypothesis
-    
-    # Find the first positive example to initialize specific_h
+    specific_h = None  
     for i, val in enumerate(tar):
         if val == 'Yes':
             specific_h = con[i].copy()
@@ -17,8 +12,7 @@ def train(con, tar):
     
     if specific_h is None:
         return "No positive example found."
-    
-    # Generalize specific_h by iterating over the remaining examples
+
     for i, val in enumerate(con):
         if tar[i] == 'Yes':
             for x in range(len(specific_h)):
@@ -27,5 +21,4 @@ def train(con, tar):
     
     return specific_h
 
-# Print the final specific hypothesis
 print(train(concepts, target))

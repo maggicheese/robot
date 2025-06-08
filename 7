@@ -24,34 +24,26 @@ df['CRIM'].fillna(df['CRIM'].mean(), inplace=True)
 df['ZN'].fillna(df['ZN'].mean(), inplace=True)
 df['CHAS'].fillna(df['CHAS'].mode()[0], inplace=True)
 df['INDUS'].fillna(df['INDUS'].mean(), inplace=True)
-df['AGE'].fillna(df['AGE'].median(), inplace=True) # Median is often preferred for
+df['AGE'].fillna(df['AGE'].median(), inplace=True)
 df['LSTAT'].fillna(df['LSTAT'].median(), inplace=True)
 df.isnull().sum()
 corr_data = df[numerical].corr(method='pearson')
-plt.figure(figsize=(10, 8)),
+plt.figure(figsize=(10, 8))
 sns.heatmap(corr_data, annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
 plt.xticks(rotation=90, ha='right')
 plt.yticks(rotation=0)
 plt.title("Correlation Matrix Heatmap")
 plt.show()
-X = df.drop('MEDV', axis=1) # All columns except 'MEDV'
-y = df['MEDV'] # Target variable
-# Scale the features
+X = df.drop('MEDV', axis=1) 
+y = df['MEDV']
 scale = StandardScaler()
 X_scaled = scale.fit_transform(X)
-# Split the data into training (80%) and testing (20%) sets
 X_train, X_test, y_train, y_test = train_test_split(X_scaled , y, test_size=0.2,random_state=42)
-# Initialize the linear regression model
 model = LinearRegression()
-# Fit the model on the training data
 model.fit(X_train, y_train)
-# Predict on the test set
 y_pred = model.predict(X_test)
-# Calculate Mean Squared Error
 mse = mean_squared_error(y_test, y_pred)
-# Calculate Root Mean Squared Error (RMSE)
 rmse = np.sqrt(mse)
-# Calculate R-squared value
 r2 = r2_score(y_test, y_pred)
 print(f'Mean Squared Error: {mse}')
 print(f'Root Mean Squared Error: {rmse}')
@@ -61,7 +53,7 @@ sns.scatterplot(x=y_test, y=y_pred)
 plt.xlabel("Actual MEDV")
 plt.ylabel("Predicted MEDV")
 plt.title("Actual vs Predicted MEDV")
-plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--')  # perfect prediction line
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--') 
 plt.show()
 
 
@@ -80,7 +72,6 @@ sns.get_dataset_names()
 data = sns.load_dataset('mpg')
 df = data.copy()    
 df['horsepower'].fillna(df['horsepower'].median(), inplace=True)
-#data cleaning
 data.isnull().sum()
 numerical = df.select_dtypes(include=['int','float']).columns
 categorical = df.select_dtypes(include=['object']).columns
@@ -93,12 +84,10 @@ plt.xticks(rotation=90, ha='right')
 plt.yticks(rotation=0)
 plt.title("Correlation Matrix Heatmap")
 plt.show()
-X = df[['horsepower']] # You can select other features here
+X = df[['horsepower']] 
 y = df['mpg']
-# Split the data into training and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-# Create polynomial features
-degree = 2 # Change the degree of the polynomial
+degree = 2 
 poly = PolynomialFeatures(degree)
 X_poly_train = poly.fit_transform(X_train)
 model = LinearRegression()
@@ -115,11 +104,9 @@ plt.ylabel('MPG')
 plt.legend()
 plt.title(f'Polynomial Regression (degree {degree})')
 plt.show()
-# Evaluate the model on the test set
 mse = mean_squared_error(y_test, y_pred)
 rmse = np.sqrt(mse)
 r2 = r2_score(y_test, y_pred)
-# Print the evaluation metrics
 print(f'Mean Squared Error (MSE): {mse:.2f}')
 print(f'Root Mean Squared Error (RMSE): {rmse:.2f}')
 print(f'R-squared (R²): {r2:.2f}')
